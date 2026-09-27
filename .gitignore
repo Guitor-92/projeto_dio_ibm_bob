@@ -1,0 +1,118 @@
+# ============================================================
+#  DIO Explorer -- .gitignore
+#  Boas praticas para projetos Node.js
+# ============================================================
+
+
+# -- Dependencias --------------------------------------------
+node_modules/
+.npm/
+.pnp
+.pnp.js
+.yarn/
+
+
+# -- Build / Output ------------------------------------------
+dist/
+build/
+out/
+*.min.js
+*.min.css
+
+
+# -- Cobertura de testes -------------------------------------
+coverage/
+.nyc_output/
+*.lcov
+
+
+# -- Variaveis de ambiente -----------------------------------
+# Nunca versionar segredos ou credenciais
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+
+# -- Logs ----------------------------------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+
+# -- Cache de ferramentas ------------------------------------
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+.prettiercache
+.jest-cache/
+.turbo/
+
+
+# -- Arquivos temporarios ------------------------------------
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+
+# -- Sistema operacional -------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+.directory
+
+
+# -- IDEs e editores -----------------------------------------
+# VS Code -- manter settings.json se compartilhado pela equipe
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# JetBrains (IntelliJ, WebStorm, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Vim / Emacs
+*.un~
+\#*\#
+
+
+# -- Dados gerados em runtime --------------------------------
+# Certificados emitidos (artefatos de execucao, nao fonte)
+dio_explorer/docs/certificados-emitidos/
+
+# Cache de progresso de usuarios
+dio_explorer/data/cache-progresso/
+
+
+# -- Lockfiles -----------------------------------------------
+# Mantenha apenas o lockfile do gerenciador usado pela equipe.
+# Descomente a linha do gerenciador que voce NAO usa:
+# package-lock.json   # descomente se usar yarn ou pnpm
+# yarn.lock           # descomente se usar npm ou pnpm
+# pnpm-lock.yaml      # descomente se usar npm ou yarn
