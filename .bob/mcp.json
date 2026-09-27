@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "dio-explorer": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\vitor\\OneDrive\\Documents\\Projetos\\IBM\\IBM BOB\\projeto_dio_ibm_bob\\dio_explorer\\mcp\\build\\index.js"
+      ],
+      "env": {}
+    }
+  }
+}
