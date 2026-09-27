@@ -28,8 +28,11 @@ O **DIO Explorer** é um projeto de demonstração construído inteiramente com 
 | 🗂️ Catálogo de Trilhas | 30 trilhas em JSON com módulos, badges, lives e promoções |
 | ⚔️ Geração de Desafios | Desafios de código por nível com enunciado, entrada/saída e recompensa em XP |
 | 🎓 Certificados | Certificados fictícios em Markdown com ID único e badges conquistadas |
-| 🔌 MCP Server | 5 ferramentas via stdio, HTTP e HTTPS com autenticação |
-| ✅ Testes Unitários | 115 testes Jest com 100% de cobertura de statements, functions e lines |
+| 🔌 MCP Server | 6 ferramentas via stdio, HTTP e HTTPS com autenticação |
+| 📈 Progresso do aluno | Histórico persistido de trilhas, desafios e certificados, com XP acumulado |
+| 🖥️ Interface Web | Front-end HTML/CSS/JS puro consumindo a mesma lógica testada via API REST |
+| ✅ Testes Unitários | 159 testes Jest com 100% de cobertura de statements, functions e lines |
+| ✅ Testes de Integração | Servidor web e servidor MCP HTTP testados como processos reais, via rede |
 | 💬 Slash Commands | 3 comandos nativos do Bob: `/trilha`, `/desafio`, `/certificados` |
 
 ---
@@ -48,16 +51,27 @@ projeto_dio_ibm_bob/
 ├── .bobignore
 └── dio_explorer/
     ├── data/
-    │   └── trilhas_dio.json       # 30 trilhas com todos os metadados
+    │   ├── trilhas_dio.json       # 30 trilhas com todos os metadados
+    │   └── cache-progresso/       # Histórico de progresso por usuário (gitignored)
+    │       └── progresso.json
     ├── src/                       # Lógica de negócio (CommonJS, sem dependências externas)
     │   ├── trilhas.js             # busca, cálculo de carga horária, formatação
     │   ├── desafio.js             # geração de desafios por nível e tecnologia
-    │   └── certificados.js        # emissão de certificados com ID único
+    │   ├── certificados.js        # emissão de certificados com ID único
+    │   └── progresso.js           # histórico de progresso por usuário (trilhas, desafios, XP, certificados)
     ├── tests/                     # Testes unitários Jest
     │   ├── trilha.test.js         # 37 testes
     │   ├── desafio.test.js        # 43 testes
-    │   └── certificados.test.js   # 35 testes
+    │   ├── certificados.test.js   # 35 testes
+    │   ├── progresso.test.js      # 32 testes
+    │   └── integration/
+    │       └── web.test.js        # 12 testes — sobe web/server.js como processo real
+    ├── web/                       # Interface web (HTML/CSS/JS puro + API REST)
+    │   ├── server.js               # servidor HTTP nativo, reaproveita src/*.js
+    │   └── public/                 # index.html, style.css, app.js
     ├── mcp/                       # MCP Server (TypeScript ESM)
+    │   ├── tests/
+    │   │   └── http.integration.test.mjs  # 6 testes — protocolo MCP real via SDK oficial
     │   ├── src/
     │   │   ├── index.ts           # Transporte stdio (Bob / Claude Desktop)
     │   │   ├── http.ts            # Transporte HTTP/HTTPS (acesso remoto / SSO)
@@ -246,40 +260,71 @@ Módulos CommonJS sem dependências externas, testáveis isoladamente.
 | `gerarCompetenciasGenericas(tecnologia)` | string | array de 5 competências |
 | `gerarCertificado(nome, tecnologia, opcoes?)` | string, string, object | `{ texto, id, trilhaNome }` ou `{ erro }` |
 
+### src/progresso.js
+
+| Função | Parâmetros | Retorno |
+|---|---|---|
+| `carregarProgresso(caminho?)` | string opcional | `{ usuarios: Object }` |
+| `salvarProgresso(dados, caminho?)` | object, string opcional | — (persiste em disco) |
+| `registrarTrilhaConsultada(usuario, tecnologia, opcoes?)` | string, string, object | `{ registro }` ou `{ erro }` |
+| `registrarDesafioConcluido(usuario, tecnologia, nivel, xp, opcoes?)` | string, string, string, number, object | `{ registro }` ou `{ erro }` (soma XP acumulado) |
+| `registrarCertificadoEmitido(usuario, tecnologia, certificadoId, opcoes?)` | string, string, string, object | `{ registro }` ou `{ erro }` |
+| `obterResumoProgresso(usuario, opcoes?)` | string, object | `{ registro }` ou `{ erro }` |
+| `formatarResumoProgresso(registro)` | object | string Markdown com o resumo do progresso |
+
+Persiste em `data/cache-progresso/progresso.json` (caminho já reservado no `.gitignore` original do projeto — dado de runtime, não de fonte). Identidade do usuário é case-insensitive (`"Maria"` e `"maria"` acumulam no mesmo registro).
+
 ---
 
-## 6. Testes unitários
+## 6. Testes unitários e de integração
 
-### Resultado final
+### Resultado final — testes unitários (Jest)
 
 | Suite | Testes | Status |
 |---|---|---|
 | `trilha.test.js` | 37 | ✅ PASS |
 | `desafio.test.js` | 43 | ✅ PASS |
 | `certificados.test.js` | 35 | ✅ PASS |
-| **TOTAL** | **115** | ✅ **115/115** |
+| `progresso.test.js` | 32 | ✅ PASS |
+| `integration/web.test.js` | 12 | ✅ PASS |
+| **TOTAL** | **159** | ✅ **159/159** |
 
-### Cobertura
+### Cobertura (src/)
 
 | Arquivo | Statements | Branches | Functions | Lines |
 |---|---|---|---|---|
 | certificados.js | 100% | 100% | 100% | 100% |
 | desafio.js | 100% | 100% | 100% | 100% |
+| progresso.js | 100% | 90.62% | 100% | 100% |
 | trilhas.js | 100% | 95.65% | 100% | 100% |
-| **TOTAL** | **100%** | **98.66%** | **100%** | **100%** |
+| **TOTAL** | **100%** | **94.96%** | **100%** | **100%** |
 
 > Meta configurada: **70%** em todas as métricas. Resultado: superada em todas as dimensões.
+
+### Testes de integração (fora do Jest, contra processos reais)
+
+Cobertura unitária de 100% prova que cada função isolada se comporta como esperado — **não** prova que o processo sobe, escuta na porta certa e fala o protocolo direito. Os dois testes abaixo cobrem exatamente essa lacuna: sobem o binário real (não importam funções internas) e conversam com ele pela rede.
+
+| Onde | O que testa | Como rodar |
+|---|---|---|
+| `dio_explorer/tests/integration/web.test.js` | Sobe `web/server.js` como child process e bate em todos os endpoints REST via `fetch`, incluindo o fluxo completo de progresso (trilha → desafio → certificado → `/api/progresso`) | Roda junto com `npm test` (Jest) |
+| `dio_explorer/mcp/tests/http.integration.test.mjs` | Sobe `build/http.js` como child process e fala o protocolo MCP real via `@modelcontextprotocol/sdk/client` (handshake, `tools/list`, `tools/call` nas 6 ferramentas) e valida a autenticação por API Key com um servidor real (requisição sem token → 401, com token → 200) | `cd mcp && npm run build && npm run test:integration` |
+
+> Esses testes já pegaram um bug real durante o desenvolvimento: no Windows, `import()` dinâmico com um caminho absoluto cru (`C:\...`) é rejeitado pelo loader ESM do Node (`ERR_UNSUPPORTED_ESM_URL_SCHEME`) — só apareceu ao rodar o servidor de verdade, nenhum teste unitário o pegaria. Corrigido convertendo os caminhos com `pathToFileURL()` antes do `import()`.
 
 ### Como rodar
 
 ```bash
 cd dio_explorer
 
-# Com cobertura (modo padrão)
+# Testes unitários + integração web, com cobertura (modo padrão)
 npm test
 
 # Com saída detalhada por teste
 npm run test:verbose
+
+# Testes de integração do servidor MCP HTTP (requer build atualizado)
+cd mcp && npm run build && npm run test:integration
 ```
 
 ### Padrões de teste aplicados
@@ -294,15 +339,18 @@ npm run test:verbose
 
 ## 7. MCP Server
 
-### As 5 ferramentas
+### As 6 ferramentas
 
 | Tool | Input | O que faz |
 |---|---|---|
 | `listar_tecnologias` | — | Retorna as 30 tecnologias com trilha, nível e XP |
 | `listar_trilhas` | `nivel?` | Lista trilhas com filtro opcional por nível |
-| `buscar_trilha` | `tecnologia` | Plano de estudos completo da trilha |
-| `gerar_desafio` | `tecnologia, nivel?` | Desafio de código com XP e badge |
+| `buscar_trilha` | `tecnologia, nome_usuario?` | Plano de estudos completo da trilha |
+| `gerar_desafio` | `tecnologia, nivel?, nome_usuario?` | Desafio de código com XP e badge |
 | `emitir_certificado` | `nome_usuario, tecnologia` | Certificado Markdown com ID único |
+| `consultar_progresso` | `nome_usuario` | Histórico de trilhas, desafios, certificados e XP total |
+
+> O parâmetro opcional `nome_usuario` em `buscar_trilha` e `gerar_desafio` registra a ação no progresso do usuário (mesmo mecanismo usado automaticamente por `emitir_certificado`). Sem ele, as ferramentas funcionam normalmente — o registro é opt-in.
 
 ### Modo stdio — Bob (já configurado)
 
@@ -439,16 +487,22 @@ O `auth.ts` implementa validação JWT HS256 com `crypto.subtle` nativo do Node.
 4. **Valide incrementalmente.** Rode os testes após cada módulo, não só no final.
 5. **Use o todo list.** Para tarefas longas, o Bob mantém um checklist visível de progresso.
 
+### Extensões já implementadas
+
+| Ideia | Onde |
+|---|---|
+| ✅ Persistir progresso do aluno | `src/progresso.js` + tool `consultar_progresso` no MCP + aba "Progresso" na interface web |
+| ✅ Interface web | `web/server.js` + `web/public/` — HTML/CSS/JS puro, sem framework, consumindo `src/*.js` via API REST fina |
+| ✅ Testes de integração ponta-a-ponta | `tests/integration/web.test.js` e `mcp/tests/http.integration.test.mjs` — sobem os processos reais e falam com eles pela rede |
+
 ### Próximas extensões sugeridas
 
 | Ideia | Caminho sugerido |
 |---|---|
-| Persistir progresso do aluno | Adicionar `src/progresso.js` + tool `salvar_progresso` no MCP |
 | Mais desafios por tecnologia | Expandir o objeto `DESAFIOS` em `src/desafio.js` |
 | API REST completa | Adicionar Express ao `mcp/src/http.ts` com rotas `/trilhas`, `/desafio`, `/certificado` |
-| Interface web | Front-end React/Next.js consumindo o MCP Server via HTTP |
 | Auth com Keycloak/Auth0 | Substituir validação manual em `auth.ts` pelo JWKS URI do IdP |
-| Banco de dados | Migrar `trilhas_dio.json` para SQLite/PostgreSQL com Prisma |
+| Banco de dados | Migrar `trilhas_dio.json` (e `progresso.json`) para SQLite/PostgreSQL com Prisma |
 
 ---
 

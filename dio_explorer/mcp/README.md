@@ -10,9 +10,10 @@ Servidor MCP do **DIO Explorer** que expõe as funcionalidades de trilhas, desaf
 |---|---|
 | `listar_tecnologias` | Lista todas as tecnologias do catálogo DIO com nome, nível e XP |
 | `listar_trilhas` | Lista trilhas com resumo; aceita filtro por nível |
-| `buscar_trilha` | Busca trilha por tecnologia e retorna plano de estudos completo |
-| `gerar_desafio` | Gera desafio de código por tecnologia e nível (iniciante / intermediário / avançado) |
-| `emitir_certificado` | Emite certificado fictício de conclusão em Markdown com ID único |
+| `buscar_trilha` | Busca trilha por tecnologia e retorna plano de estudos completo. Aceita `nome_usuario` opcional para registrar a consulta no progresso |
+| `gerar_desafio` | Gera desafio de código por tecnologia e nível (iniciante / intermediário / avançado). Aceita `nome_usuario` opcional para registrar o XP no progresso |
+| `emitir_certificado` | Emite certificado fictício de conclusão em Markdown com ID único; registra automaticamente no progresso de `nome_usuario` |
+| `consultar_progresso` | Consulta o histórico de progresso de um usuário: trilhas, desafios, certificados e XP total |
 
 ---
 
@@ -199,4 +200,13 @@ Sempre que modificar arquivos em `src/`, recompile antes de reiniciar:
 ```bash
 cd dio_explorer/mcp
 npm run build
+```
+
+## Testes de integração
+
+Sobem o servidor HTTP real (`build/http.js`) como processo filho e falam o protocolo MCP de verdade via `@modelcontextprotocol/sdk/client` — cobrem handshake, `tools/list`, `tools/call` nas 6 ferramentas e a autenticação por API Key contra um servidor real (não mocks).
+
+```bash
+npm run build              # obrigatório antes — o teste roda o build/
+npm run test:integration
 ```
