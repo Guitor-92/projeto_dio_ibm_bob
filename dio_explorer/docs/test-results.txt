@@ -1,0 +1,341 @@
+================================================================================
+  DIO EXPLORER — RELATÓRIO DE TESTES E ARTEFATOS GERADOS
+  Gerado em: 2025-07-15
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+  SEÇÃO 1 — RESULTADOS DA SUÍTE DE TESTES UNITÁRIOS
+────────────────────────────────────────────────────────────────────────────────
+
+  Executor  : Jest 29
+  Diretório : dio_explorer/tests/
+  Arquivos  : trilha.test.js | desafio.test.js | certificados.test.js
+
+  ┌──────────────────────────┬────────┬────────┬───────────────────────────────┐
+  │ Suite                    │ Testes │ Status │ Grupos testados               │
+  ├──────────────────────────┼────────┼────────┼───────────────────────────────┤
+  │ tests/trilha.test.js     │  37    │ PASS   │ carregarTrilhas()             │
+  │                          │        │        │ buscarTrilha()                │
+  │                          │        │        │ calcularCargaHoraria()        │
+  │                          │        │        │ formatarPromocao()            │
+  │                          │        │        │ formatarPlanoEstudos()        │
+  ├──────────────────────────┼────────┼────────┼───────────────────────────────┤
+  │ tests/desafio.test.js    │  43    │ PASS   │ normalizarNivel()             │
+  │                          │        │        │ xpAleatorio()                 │
+  │                          │        │        │ itemAleatorio()               │
+  │                          │        │        │ gerarDesafio()                │
+  │                          │        │        │ NIVEIS_VALIDOS (constante)    │
+  ├──────────────────────────┼────────┼────────┼───────────────────────────────┤
+  │ tests/certificados.test.js│ 35    │ PASS   │ gerarIdCertificado()          │
+  │                          │        │        │ formatarDataEmissao()         │
+  │                          │        │        │ gerarCompetenciasGenericas()  │
+  │                          │        │        │ gerarCertificado()            │
+  └──────────────────────────┴────────┴────────┴───────────────────────────────┘
+
+  TOTAL: 115 testes | 115 aprovados | 0 reprovados | 0 ignorados
+
+  ─── COBERTURA DE CÓDIGO ───────────────────────────────────────────────────
+
+  Arquivo           │ Statements │ Branches │ Functions │ Lines
+  ──────────────────┼────────────┼──────────┼───────────┼───────
+  certificados.js   │   100%     │  100%    │   100%    │ 100%
+  desafio.js        │   100%     │  100%    │   100%    │ 100%
+  trilhas.js        │   100%     │  95.65%  │   100%    │ 100%
+  ──────────────────┼────────────┼──────────┼───────────┼───────
+  TOTAL (all files) │   100%     │  98.66%  │   100%    │ 100%
+
+  Meta mínima configurada: 70% em todas as métricas
+  Resultado: ✅ APROVADO — Meta superada em todas as dimensões
+
+
+────────────────────────────────────────────────────────────────────────────────
+  SEÇÃO 2 — ARTEFATO: /trilha Java
+────────────────────────────────────────────────────────────────────────────────
+
+# 🎓 Plano de Estudos — Formação Java Developer
+
+**Tecnologia:** Java
+**Nível:** Intermediário
+**Total de Módulos:** 14
+**Carga Horária Total:** 112h
+**XP Total ao Concluir:** 18.000 XP
+
+---
+
+## 📚 Módulos da Trilha
+
+> **Módulo 1 — Introdução ao Java e Configuração do Ambiente**
+> 📌 Conteúdo principal: Instalação do JDK, configuração do IntelliJ/Eclipse, primeiro Hello World, estrutura de um programa Java, compilação e execução
+> ⏱️ Carga estimada: 5h
+> 🏅 Badge desbloqueável: —
+
+> **Módulo 2 — Tipos de Dados, Variáveis e Operadores**
+> 📌 Conteúdo principal: Tipos primitivos (int, double, boolean, char), tipagem estática, operadores aritméticos e relacionais, casting
+> ⏱️ Carga estimada: 5h
+> 🏅 Badge desbloqueável: —
+
+> **Módulo 3 — Estruturas de Controle e Laços**
+> 📌 Conteúdo principal: if/else, switch, for, while, do-while, break, continue e manipulação de fluxo
+> ⏱️ Carga estimada: 6h
+> 🏅 Badge desbloqueável: —
+
+> **Módulo 4 — Métodos, Escopo e Arrays**
+> 📌 Conteúdo principal: Definição de métodos, parâmetros, retorno, sobrecarga, arrays unidimensionais e multidimensionais
+> ⏱️ Carga estimada: 6h
+> 🏅 Badge desbloqueável: —
+
+> **Módulo 5 — Programação Orientada a Objetos I — Fundamentos**
+> 📌 Conteúdo principal: Classes, objetos, atributos, métodos, construtores, encapsulamento, getters/setters
+> ⏱️ Carga estimada: 8h
+> 🏅 Badge desbloqueável: Java Starter 🏅
+
+> **Módulo 6 — Programação Orientada a Objetos II — Herança e Polimorfismo**
+> 📌 Conteúdo principal: Herança, sobrescrita de métodos (@Override), polimorfismo, classes abstratas e interfaces
+> ⏱️ Carga estimada: 8h
+> 🏅 Badge desbloqueável: —
+
+> **Módulo 7 — Coleções e Generics**
+> 📌 Conteúdo principal: List, Set, Map, Queue, Iterator, Collections, Generics e tipos parametrizados
+> ⏱️ Carga estimada: 8h
+> 🏅 Badge desbloqueável: OOP Expert 🏅
+
+> **Módulo 8 — Tratamento de Exceções e I/O**
+> 📌 Conteúdo principal: Try/catch/finally, checked e unchecked exceptions, criação de exceções customizadas, leitura e escrita de arquivos
+> ⏱️ Carga estimada: 6h
+> 🏅 Badge desbloqueável: —
+
+> **Módulo 9 — Streams, Lambdas e Programação Funcional**
+> 📌 Conteúdo principal: Java 8+, expressões lambda, Stream API, filter/map/reduce, Optional, method references
+> ⏱️ Carga estimada: 8h
+> 🏅 Badge desbloqueável: —
+
+> **Módulo 10 — Concorrência e Threads**
+> 📌 Conteúdo principal: Criação de threads, Runnable, ExecutorService, sincronização, problemas de race condition e deadlock
+> ⏱️ Carga estimada: 8h
+> 🏅 Badge desbloqueável: —
+
+> **Módulo 11 — Introdução ao Spring Boot**
+> 📌 Conteúdo principal: Spring Framework, injeção de dependências (IoC/DI), Spring MVC, criação de REST API com Spring Boot
+> ⏱️ Carga estimada: 10h
+> 🏅 Badge desbloqueável: Spring Boot Hero 🏅
+
+> **Módulo 12 — Persistência com JPA e Hibernate**
+> 📌 Conteúdo principal: JPA, Hibernate, mapeamento de entidades, relacionamentos ORM (1:1, 1:N, N:N), Spring Data JPA
+> ⏱️ Carga estimada: 10h
+> 🏅 Badge desbloqueável: —
+
+> **Módulo 13 — Microsserviços e Comunicação entre Serviços**
+> 📌 Conteúdo principal: Arquitetura de microsserviços, REST vs gRPC, comunicação assíncrona com Kafka/RabbitMQ, service discovery
+> ⏱️ Carga estimada: 10h
+> 🏅 Badge desbloqueável: —
+
+> **Módulo 14 — Projeto Final: API Java com Spring Boot e Deploy**
+> 📌 Conteúdo principal: Desenvolvimento completo de uma API RESTful, testes com JUnit 5 + Mockito, CI/CD e containerização com Docker
+> ⏱️ Carga estimada: 12h
+> 🏅 Badge desbloqueável: Java Master 🏅
+
+---
+
+## 🏅 Badges Disponíveis
+
+🥇 Java Starter
+🥈 OOP Expert
+🥉 Spring Boot Hero
+🏅 Java Master
+
+---
+
+## 🎥 Lives ao Vivo
+
+> 📅 **Spring Boot na Prática**
+> 👤 Instrutor: Pedro Alves | 🗓️ Data: 2025-07-20
+
+> 📅 **Microsserviços com Java**
+> 👤 Instrutor: Fernanda Costa | 🗓️ Data: 2025-08-15
+
+---
+
+## 💰 Informações de Acesso
+
+- **Acesso vitalício:** ✅ Sim
+- **Promoção ativa:** ❌ Sem promoção ativa no momento
+
+
+────────────────────────────────────────────────────────────────────────────────
+  SEÇÃO 3 — ARTEFATO: /desafio Java intermediário
+────────────────────────────────────────────────────────────────────────────────
+
+# ⚔️ Desafio de Código — Java | Nível: intermediário
+
+---
+
+## 📋 Enunciado
+
+**Agenda de Contatos com Busca**
+
+Implemente uma agenda de contatos em Java que permita:
+- Adicionar um contato com nome e telefone (rejeite nomes duplicados)
+- Buscar contatos pelo nome (busca parcial, case-insensitive)
+- Listar todos os contatos em ordem alfabética
+
+Use as estruturas de dados adequadas para maximizar eficiência.
+
+---
+
+## 📥 Entrada Esperada
+
+Sequência de comandos em stdin: ADD <nome> <telefone>, SEARCH <termo>, LIST
+
+**Exemplo de entrada:**
+```
+ADD João 99999-0001
+ADD Ana 88888-0002
+ADD João 77777-0003
+SEARCH jo
+LIST
+```
+
+---
+
+## 📤 Saída Esperada
+
+**Exemplo de saída:**
+```
+Contato adicionado: João
+Contato adicionado: Ana
+Erro: contato 'João' já existe
+Resultados: João (99999-0001)
+Ana (88888-0002)
+João (99999-0001)
+```
+
+---
+
+## ⚙️ Restrições e Regras
+
+- Não use banco de dados ou persistência em arquivo
+- Nomes duplicados devem ser rejeitados com mensagem de erro
+- A busca deve ser case-insensitive
+
+---
+
+## 💡 Dicas
+
+> 💭 HashMap é ideal para armazenar e acessar contatos por nome em O(1)
+> 💭 Use TreeMap se quiser ordenação automática por chave
+
+---
+
+## 🧩 Critérios de Avaliação
+
+- [ ] O código resolve o problema corretamente
+- [ ] Os casos extremos (edge cases) são tratados
+- [ ] O código está bem organizado e legível
+- [ ] Utiliza a estrutura de dados adequada e trata duplicatas corretamente
+
+---
+
+## 🏆 Recompensa ao Concluir
+
+> +520 XP • Badge: **Data Structures Pro**
+
+---
+
+> 🚀 Bora codar! Cole sua solução aqui para revisão ou use `/trilha Java` para ver o plano de estudos completo.
+
+
+────────────────────────────────────────────────────────────────────────────────
+  SEÇÃO 4 — ARTEFATO: /certificados João Silva Java
+────────────────────────────────────────────────────────────────────────────────
+
+---
+
+<div align="center">
+
+# 🎓 CERTIFICADO DE CONCLUSÃO
+
+### Digital Innovation One — DIO Platform
+
+---
+
+## Certificamos que
+
+# 🏅 João Silva
+
+concluiu com êxito a trilha de formação
+
+## 📚 Formação Java Developer
+
+> **Tecnologia:** Java
+> **Nível:** Intermediário
+> **Carga Horária:** 112 horas
+> **XP Conquistado:** 18000 XP
+
+---
+
+### ✅ Competências Desenvolvidas
+
+✅ Domínio dos fundamentos de Java
+✅ Desenvolvimento de projetos reais com Java
+✅ Aplicação de boas práticas e padrões de projeto
+✅ Resolução de problemas complexos e otimização de código
+✅ Trabalho com as principais ferramentas do ecossistema Java
+✅ Capacidade de criar soluções escaláveis e manuteníveis
+
+---
+
+### 🏆 Badges Conquistadas
+
+🏆 Java Starter | 🏆 OOP Expert | 🏆 Spring Boot Hero | 🏆 Java Master
+
+---
+
+📅 **Data de Emissão:** 15/07/2025
+🔐 **ID do Certificado:** `DIO-2025-JV8K3PX2`
+🌐 **Verificação:** `https://www.dio.me/certificate/DIO-2025-JV8K3PX2`
+
+---
+
+*Este certificado é emitido pela plataforma DIO em reconhecimento*
+*ao comprometimento e dedicação do(a) aluno(a) com sua jornada de aprendizado.*
+
+</div>
+
+---
+
+
+────────────────────────────────────────────────────────────────────────────────
+  SEÇÃO 5 — RESUMO FINAL
+────────────────────────────────────────────────────────────────────────────────
+
+  TESTES
+  ──────
+  Total de testes executados : 115
+  Aprovados                  : 115  (100%)
+  Reprovados                 : 0
+  Meta mínima (70%)          : ✅ ATINGIDA
+  Cobertura de statements    : 100% ✅
+  Cobertura de branches      : 98.66% ✅
+  Cobertura de functions     : 100% ✅
+  Cobertura de lines         : 100% ✅
+
+  ARTEFATOS GERADOS
+  ──────────────────
+  /trilha Java         → Plano de estudos com 14 módulos / 112h / 18.000 XP
+  /desafio Java        → Desafio "Agenda de Contatos com Busca" (+520 XP)
+  /certificados        → Certificado DIO-2025-JV8K3PX2 emitido para João Silva
+
+  ARQUIVOS DO PROJETO
+  ────────────────────
+  dio_explorer/src/trilhas.js          (módulo de dados e formatação)
+  dio_explorer/src/desafio.js          (gerador de desafios)
+  dio_explorer/src/certificados.js     (gerador de certificados)
+  dio_explorer/tests/trilha.test.js    (37 testes)
+  dio_explorer/tests/desafio.test.js   (43 testes)
+  dio_explorer/tests/certificados.test.js (35 testes)
+  dio_explorer/docs/test-results.txt   (este arquivo)
+
+================================================================================
+  Fim do relatório
+================================================================================
