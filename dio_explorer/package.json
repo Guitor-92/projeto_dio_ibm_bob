@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest --coverage --coverageReporters=text --coverageReporters=json-summary",
-    "test:verbose": "jest --coverage --verbose --coverageReporters=text"
+    "test:verbose": "jest --coverage --verbose --coverageReporters=text",
+    "web": "node web/server.js"
   },
   "jest": {
     "testEnvironment": "node",

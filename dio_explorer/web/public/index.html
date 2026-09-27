@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIO Explorer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>🗂️ DIO Explorer</h1>
+    <p>Trilhas, desafios e certificados — construído com o IBM Bob</p>
+  </header>
+
+  <div class="usuario-bar">
+    <label for="usuario-atual">👤 Seu nome (opcional — registra seu progresso)</label>
+    <input id="usuario-atual" placeholder="Ex: Maria Silva" autocomplete="off" />
+  </div>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn active" data-tab="trilha">📚 Trilha</button>
+    <button class="tab-btn" data-tab="desafio">⚔️ Desafio</button>
+    <button class="tab-btn" data-tab="certificado">🎓 Certificado</button>
+    <button class="tab-btn" data-tab="progresso">📈 Progresso</button>
+  </nav>
+
+  <main>
+    <section id="tab-trilha" class="tab-panel active">
+      <form id="form-trilha" class="card">
+        <label for="trilha-tecnologia">Tecnologia</label>
+        <input id="trilha-tecnologia" name="tecnologia" placeholder="Ex: Python, Java, AWS, React" required />
+        <button type="submit">Buscar trilha</button>
+      </form>
+    </section>
+
+    <section id="tab-desafio" class="tab-panel">
+      <form id="form-desafio" class="card">
+        <label for="desafio-tecnologia">Tecnologia</label>
+        <input id="desafio-tecnologia" name="tecnologia" placeholder="Ex: Java, Python" required />
+
+        <label for="desafio-nivel">Nível</label>
+        <select id="desafio-nivel" name="nivel">
+          <option value="">intermediário (padrão)</option>
+          <option value="iniciante">iniciante</option>
+          <option value="intermediário">intermediário</option>
+          <option value="avançado">avançado</option>
+        </select>
+
+        <button type="submit">Gerar desafio</button>
+      </form>
+    </section>
+
+    <section id="tab-certificado" class="tab-panel">
+      <form id="form-certificado" class="card">
+        <label for="certificado-nome">Nome do(a) aluno(a)</label>
+        <input id="certificado-nome" name="nome" placeholder="Ex: João Silva" required />
+
+        <label for="certificado-tecnologia">Trilha concluída</label>
+        <input id="certificado-tecnologia" name="tecnologia" placeholder="Ex: Python" required />
+
+        <button type="submit">Emitir certificado</button>
+      </form>
+    </section>
+
+    <section id="tab-progresso" class="tab-panel">
+      <div class="card">
+        <p class="progresso-hint">
+          Informe seu nome no campo acima e use as abas Trilha, Desafio e Certificado —
+          cada ação registrada aparece aqui.
+        </p>
+        <button id="btn-atualizar-progresso" type="button">Atualizar meu progresso</button>
+      </div>
+    </section>
+
+    <section id="resultado-wrapper" hidden>
+      <div class="result-header">
+        <span id="resultado-status"></span>
+        <button id="btn-copiar">📋 Copiar Markdown</button>
+      </div>
+      <article id="resultado" class="markdown-output"></article>
+    </section>
+
+    <p id="loading" hidden>Carregando…</p>
+  </main>
+
+  <footer>
+    <p>Projeto de portfólio — dados fictícios. Consulte o <code>README.md</code> para detalhes técnicos.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
