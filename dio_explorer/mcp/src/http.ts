@@ -28,7 +28,7 @@ import http from 'http';
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
@@ -39,12 +39,22 @@ import { authenticate, sendUnauthorized } from './auth.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const srcPath = path.resolve(__dirname, '../../src');
 
-const { carregarTrilhas, buscarTrilha, formatarPlanoEstudos } =
-  await import(path.join(srcPath, 'trilhas.js') as string);
-const { gerarDesafio } =
-  await import(path.join(srcPath, 'desafio.js') as string);
-const { gerarCertificado } =
-  await import(path.join(srcPath, 'certificados.js') as string);
+// No Windows, import() dinâmico exige uma URL file:// — um caminho absoluto
+// cru ("C:\...") é rejeitado pelo loader ESM com ERR_UNSUPPORTED_ESM_URL_SCHEME.
+function importCjs(nomeArquivo: string): Promise<any> {
+  return import(pathToFileURL(path.join(srcPath, nomeArquivo)).href);
+}
+
+const { carregarTrilhas, buscarTrilha, formatarPlanoEstudos } = await importCjs('trilhas.js');
+const { gerarDesafio } = await importCjs('desafio.js');
+const { gerarCertificado } = await importCjs('certificados.js');
+const {
+  registrarTrilhaConsultada,
+  registrarDesafioConcluido,
+  registrarCertificadoEmitido,
+  obterResumoProgresso,
+  formatarResumoProgresso,
+} = await importCjs('progresso.js');
 
 // ── Configuração do ambiente ──────────────────────────────────────────────
 const PORT = parseInt(process.env.DIO_MCP_PORT ?? '3000', 10);
@@ -113,15 +123,19 @@ function createMcpServer(): McpServer {
       description: 'Busca trilha por tecnologia e retorna plano de estudos completo.',
       inputSchema: z.object({
         tecnologia: z.string().min(1).describe('Ex: "Java", "Python", "AWS"'),
+        nome_usuario: z.string().optional().describe('Opcional. Registra a consulta no progresso do usuário.'),
       }),
     },
-    async ({ tecnologia }) => {
+    async ({ tecnologia, nome_usuario }) => {
       const resultados = buscarTrilha(tecnologia) as unknown[];
       if (resultados.length === 0) {
         return {
           content: [{ type: 'text' as const, text: `❌ Trilha "${tecnologia}" não encontrada. Use listar_tecnologias para ver as opções.` }],
           isError: true,
         };
+      }
+      if (nome_usuario) {
+        registrarTrilhaConsultada(nome_usuario, tecnologia);
       }
       const textos = (resultados as object[]).map((t) => formatarPlanoEstudos(t) as string);
       return { content: [{ type: 'text' as const, text: textos.join('\n\n---\n\n') }] };
@@ -136,14 +150,18 @@ function createMcpServer(): McpServer {
       inputSchema: z.object({
         tecnologia: z.string().min(1),
         nivel: z.enum(['iniciante', 'intermediário', 'avançado']).optional().default('intermediário'),
+        nome_usuario: z.string().optional().describe('Opcional. Registra o desafio e o XP no progresso do usuário.'),
       }),
     },
-    async ({ tecnologia, nivel }) => {
+    async ({ tecnologia, nivel, nome_usuario }) => {
       const resultado = gerarDesafio(tecnologia, nivel) as
         | { texto: string; nivel: string; xp: number; badge: string }
         | { erro: string };
       if ('erro' in resultado) {
         return { content: [{ type: 'text' as const, text: resultado.erro }], isError: true };
+      }
+      if (nome_usuario) {
+        registrarDesafioConcluido(nome_usuario, tecnologia, resultado.nivel, resultado.xp);
       }
       return { content: [{ type: 'text' as const, text: resultado.texto }] };
     }
@@ -166,11 +184,34 @@ function createMcpServer(): McpServer {
       if ('erro' in resultado) {
         return { content: [{ type: 'text' as const, text: resultado.erro }], isError: true };
       }
+      registrarCertificadoEmitido(nome_usuario, tecnologia, resultado.id);
       return {
         content: [{
           type: 'text' as const,
           text: `${resultado.texto}\n\n---\n🔐 **ID:** \`${resultado.id}\`\n📚 **Trilha:** ${resultado.trilhaNome}`,
         }],
+      };
+    }
+  );
+
+  // 6. consultar_progresso
+  srv.registerTool(
+    'consultar_progresso',
+    {
+      description: 'Consulta o histórico de progresso de um usuário: trilhas, desafios, certificados e XP total.',
+      inputSchema: z.object({
+        nome_usuario: z.string().min(1).describe('Nome do usuário. Ex: "João Silva"'),
+      }),
+    },
+    async ({ nome_usuario }) => {
+      const resultado = obterResumoProgresso(nome_usuario) as
+        | { registro: object }
+        | { erro: string };
+      if ('erro' in resultado) {
+        return { content: [{ type: 'text' as const, text: resultado.erro }], isError: true };
+      }
+      return {
+        content: [{ type: 'text' as const, text: formatarResumoProgresso(resultado.registro) as string }],
       };
     }
   );
