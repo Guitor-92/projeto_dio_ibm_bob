@@ -14,7 +14,8 @@
     "build:watch": "tsc --watch",
     "start": "node build/index.js",
     "start:http": "node build/http.js",
-    "dev": "node --watch build/index.js"
+    "dev": "node --watch build/index.js",
+    "test:integration": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
